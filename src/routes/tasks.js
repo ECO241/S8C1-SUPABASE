@@ -1,34 +1,15 @@
 import express from 'express';
 const router = express.Router();
 
-// database connection
-import { createClient } from '@supabase/supabase-js'
-import 'dotenv/config'
-// Load environment variables from .env file
-const supabaseUrl = process.env.SUPABASE_TEAM;
-const supabaseKey = process.env.SUPABASE_KEY;
-
-// Check if the environment variables are set
-if (!supabaseUrl || !supabaseKey) {
-    console.error("Supabase URL or key is missing. Make sure to set SUPABASE_TEAM and SUPABASE_KEY environment variables.");
-    process.exit(1);
-}
-
-// Create a new Supabase client
-const supabase = createClient(supabaseUrl, supabaseKey);
+import { 
+    getAllData,
+    getTaskById,
+    createTask,
+    updateTask,
+    deleteTask } from '../controllers/tasks.js';
 
 // GET all tasks
-router.get('/', (req, res) => {
-    // Your code to fetch all tasks from the database
-    const getAllData = async () => {
-        const { data, error } = await supabase
-            .from('Tasks')
-            .select();
-        if (error) {
-            throw new Error(error.message);
-        }
-        return data;
-    }
+router.get('/', (req, res) => {    
     // Call the function and send the response
     getAllData().then((data) => {
         res.json({ success: true, data });
@@ -41,17 +22,6 @@ router.get('/', (req, res) => {
 
 // GET a specific task by ID
 router.get('/:id', (req, res) => {
-    // Your code to fetch a task by ID from the database
-    const getTaskById = async (id) => {
-        const { data, error } = await supabase
-            .from('Tasks')
-            .select('title, description')
-            .eq('id', id);
-        if (error) {
-            throw new Error(error.message);
-        }
-        return data;
-    }
     // Call the function and send the response
     getTaskById(req.params.id).then((data) => {
         res.json({ success: true, data });
@@ -63,15 +33,6 @@ router.get('/:id', (req, res) => {
 
 // POST a new task
 router.post('/', (req, res) => {
-    // Your code to create a new task in the database
-    const createTask = async (task) => {
-        const { error } = await supabase
-            .from('Tasks')
-            .insert(task);
-        if (error) {
-            throw new Error(error.message);
-        }
-    }
     // Call the function and send the response
     createTask(req.body).then(() => {
         res.json({ success: true, message: "Task created successfully" });
@@ -83,16 +44,6 @@ router.post('/', (req, res) => {
 
 // PUT/UPDATE an existing task
 router.put('/:id', (req, res) => {
-    // Your code to update an existing task in the database
-    const updateTask = async (id, task) => {
-        const { error } = await supabase
-            .from('Tasks')
-            .update(task)
-            .eq('id', id);
-        if (error) {
-            throw new Error(error.message);
-        }
-    }
     // Call the function and send the response
     updateTask(req.params.id, req.body).then(() => {
         res.json({ success: true, message: "Task updated successfully" });
@@ -104,16 +55,6 @@ router.put('/:id', (req, res) => {
 
 // DELETE a task
 router.delete('/:id', (req, res) => {
-    // Your code to delete a task from the database
-    const deleteTask = async (id) => {
-        const { error } = await supabase
-            .from('Tasks')
-            .delete()
-            .eq('id', id);
-        if (error) {
-            throw new Error(error.message);
-        }
-    }
     // Call the function and send the response
     deleteTask(req.params.id).then(() => {
         res.json({ success: true, message: "Task deleted successfully" });
