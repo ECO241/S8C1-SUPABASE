@@ -1,18 +1,17 @@
-
 import { createClient } from '@supabase/supabase-js'
+import 'dotenv/config'
 
-// const supabaseUrl = 
-// const supabaseKey = 
+const supabaseUrl = process.env.SUPABASE_TEAM;
+const supabaseKey = process.env.SUPABASE_KEY;
 
 const supabase = createClient(supabaseUrl, supabaseKey)
 
-//console.log({supabase});
-/*
+
 const { data, error } = await supabase
     .from('Tasks')
-    .select('title')
+    .select('title, description')    
 
-console.log(data, error);*/
+console.log(data, error);
 
 /*
 const { datab, errorb } = await supabase
@@ -44,10 +43,11 @@ const { error } = await supabase
 
 console.log(error);
 */
-
+/*
 const { error } = await supabase
   .from('Tasks')
   .delete()
   .eq('id', 4)
 
 console.log(error);
+*/
