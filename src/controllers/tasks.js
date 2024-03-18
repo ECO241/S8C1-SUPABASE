@@ -31,7 +31,7 @@ const getAllData = async () => {
 const getTaskById = async (id) => {
     const { data, error } = await supabase
         .from('Tasks')
-        .select('title, description')
+        .select()
         .eq('id', id);
     if (error) {
         throw new Error(error.message);
