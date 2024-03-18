@@ -4,15 +4,17 @@ const router = express.Router();
 // database connection
 import { createClient } from '@supabase/supabase-js'
 import 'dotenv/config'
-
+// Load environment variables from .env file
 const supabaseUrl = process.env.SUPABASE_TEAM;
 const supabaseKey = process.env.SUPABASE_KEY;
 
+// Check if the environment variables are set
 if (!supabaseUrl || !supabaseKey) {
     console.error("Supabase URL or key is missing. Make sure to set SUPABASE_TEAM and SUPABASE_KEY environment variables.");
     process.exit(1);
 }
 
+// Create a new Supabase client
 const supabase = createClient(supabaseUrl, supabaseKey);
 
 // GET all tasks
@@ -27,7 +29,7 @@ router.get('/', (req, res) => {
         }
         return data;
     }
-
+    // Call the function and send the response
     getAllData().then((data) => {
         res.json({ success: true, data });
     }).catch((error) => {
@@ -50,6 +52,7 @@ router.get('/:id', (req, res) => {
         }
         return data;
     }
+    // Call the function and send the response
     getTaskById(req.params.id).then((data) => {
         res.json({ success: true, data });
     }).catch((error) => {
@@ -69,6 +72,7 @@ router.post('/', (req, res) => {
             throw new Error(error.message);
         }
     }
+    // Call the function and send the response
     createTask(req.body).then(() => {
         res.json({ success: true, message: "Task created successfully" });
     }).catch((error) => {
@@ -89,6 +93,7 @@ router.put('/:id', (req, res) => {
             throw new Error(error.message);
         }
     }
+    // Call the function and send the response
     updateTask(req.params.id, req.body).then(() => {
         res.json({ success: true, message: "Task updated successfully" });
     }).catch((error) => {
@@ -109,6 +114,7 @@ router.delete('/:id', (req, res) => {
             throw new Error(error.message);
         }
     }
+    // Call the function and send the response
     deleteTask(req.params.id).then(() => {
         res.json({ success: true, message: "Task deleted successfully" });
     }).catch((error) => {
